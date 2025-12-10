@@ -70,42 +70,65 @@ void main() async {
   final port = int.parse(Platform.environment['PORT'] ?? '5000');
   await serve(handler, InternetAddress.anyIPv4, port);
 
-  // Get local IP address
+  // Check if running on Replit
+  final replSlug = Platform.environment['REPL_SLUG'];
+  final replOwner = Platform.environment['REPL_OWNER'];
+  final isReplit = replSlug != null && replOwner != null;
+
+  // Get local IP address (only for local development)
   String? localIp;
-  try {
-    for (var interface in await NetworkInterface.list()) {
-      for (var addr in interface.addresses) {
-        if (addr.type == InternetAddressType.IPv4 && 
-            !addr.isLoopback && 
-            !addr.address.startsWith('169.254')) {
-          localIp = addr.address;
-          break;
+  if (!isReplit) {
+    try {
+      for (var interface in await NetworkInterface.list()) {
+        for (var addr in interface.addresses) {
+          if (addr.type == InternetAddressType.IPv4 && 
+              !addr.isLoopback && 
+              !addr.address.startsWith('169.254') &&
+              !addr.address.startsWith('172.31')) { // Skip internal container IPs
+            localIp = addr.address;
+            break;
+          }
         }
+        if (localIp != null) break;
       }
-      if (localIp != null) break;
+    } catch (e) {
+      // If we can't get IP, just use localhost
     }
-  } catch (e) {
-    // If we can't get IP, just use localhost
   }
 
   // Print API endpoints
   final localhostUrl = 'http://localhost:$port';
   final networkUrl = localIp != null ? 'http://$localIp:$port' : null;
+  final replitUrl = isReplit ? 'https://$replSlug.$replOwner.repl.co' : null;
   
   print('\n' + '=' * 50);
   print('✅ Server running on port $port');
   print('=' * 50);
-  print('\n🌐 Base URLs:');
-  print('  Local:    $localhostUrl');
-  if (networkUrl != null) {
-    print('  Network:  $networkUrl');
+  
+  if (isReplit) {
+    // Replit deployment
+    print('\n🌍 Public API URL (Replit):');
+    print('  $replitUrl');
+    print('\n📡 API Endpoints:');
+    print('  GET    $replitUrl/tasks');
+    print('  POST   $replitUrl/tasks');
+    print('  PUT    $replitUrl/tasks/{id}');
+    print('  DELETE $replitUrl/tasks/{id}');
+  } else {
+    // Local development
+    print('\n🌐 Base URLs:');
+    print('  Local:    $localhostUrl');
+    if (networkUrl != null) {
+      print('  Network:  $networkUrl');
+    }
     print('  Android:  http://10.0.2.2:$port (for Android Emulator)');
+    print('\n📡 API Endpoints:');
+    print('  GET    $localhostUrl/tasks');
+    print('  POST   $localhostUrl/tasks');
+    print('  PUT    $localhostUrl/tasks/{id}');
+    print('  DELETE $localhostUrl/tasks/{id}');
   }
-  print('\n📡 API Endpoints:');
-  print('  GET    $localhostUrl/tasks');
-  print('  POST   $localhostUrl/tasks');
-  print('  PUT    $localhostUrl/tasks/{id}');
-  print('  DELETE $localhostUrl/tasks/{id}');
+  
   print('\n' + '=' * 50 + '\n');
 }
 
