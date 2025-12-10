@@ -70,18 +70,42 @@ void main() async {
   final port = int.parse(Platform.environment['PORT'] ?? '5000');
   await serve(handler, InternetAddress.anyIPv4, port);
 
+  // Get local IP address
+  String? localIp;
+  try {
+    for (var interface in await NetworkInterface.list()) {
+      for (var addr in interface.addresses) {
+        if (addr.type == InternetAddressType.IPv4 && 
+            !addr.isLoopback && 
+            !addr.address.startsWith('169.254')) {
+          localIp = addr.address;
+          break;
+        }
+      }
+      if (localIp != null) break;
+    }
+  } catch (e) {
+    // If we can't get IP, just use localhost
+  }
+
   // Print API endpoints
-  final baseUrl = 'http://localhost:$port';
+  final localhostUrl = 'http://localhost:$port';
+  final networkUrl = localIp != null ? 'http://$localIp:$port' : null;
+  
   print('\n' + '=' * 50);
   print('✅ Server running on port $port');
   print('=' * 50);
-  print('\n🌐 Base URL:');
-  print('  $baseUrl');
+  print('\n🌐 Base URLs:');
+  print('  Local:    $localhostUrl');
+  if (networkUrl != null) {
+    print('  Network:  $networkUrl');
+    print('  Android:  http://10.0.2.2:$port (for Android Emulator)');
+  }
   print('\n📡 API Endpoints:');
-  print('  GET    $baseUrl/tasks');
-  print('  POST   $baseUrl/tasks');
-  print('  PUT    $baseUrl/tasks/{id}');
-  print('  DELETE $baseUrl/tasks/{id}');
+  print('  GET    $localhostUrl/tasks');
+  print('  POST   $localhostUrl/tasks');
+  print('  PUT    $localhostUrl/tasks/{id}');
+  print('  DELETE $localhostUrl/tasks/{id}');
   print('\n' + '=' * 50 + '\n');
 }
 
