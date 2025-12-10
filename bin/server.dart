@@ -67,9 +67,21 @@ void main() async {
       .addMiddleware(logRequests())
       .addHandler(router);
 
-  final port = int.parse(Platform.environment['PORT'] ?? '8080');
+  final port = int.parse(Platform.environment['PORT'] ?? '5000');
   await serve(handler, InternetAddress.anyIPv4, port);
 
+  // Print API endpoints
+  final baseUrl = 'http://localhost:$port';
+  print('\n' + '=' * 50);
   print('✅ Server running on port $port');
+  print('=' * 50);
+  print('\n🌐 Base URL:');
+  print('  $baseUrl');
+  print('\n📡 API Endpoints:');
+  print('  GET    $baseUrl/tasks');
+  print('  POST   $baseUrl/tasks');
+  print('  PUT    $baseUrl/tasks/{id}');
+  print('  DELETE $baseUrl/tasks/{id}');
+  print('\n' + '=' * 50 + '\n');
 }
 
