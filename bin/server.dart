@@ -18,6 +18,22 @@ void main() async {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
+  // GET welcome message for the base path /
+  router.get('/', (Request request) {
+    return Response.ok(
+        jsonEncode({
+          'message': 'Welcome to the Task API!',
+          'endpoints': {
+            'GET /tasks': 'Get all tasks',
+            'POST /tasks': 'Create a new task',
+            'PUT /tasks/{id}': 'Update a task',
+            'DELETE /tasks/{id}': 'Delete a task',
+          },
+          'example': '/tasks'
+        }),
+        headers: headers);
+  });
+
   // GET all tasks
   router.get('/tasks', (Request request) {
     final tasks = db.getAllTasks().map((t) => t.toJson()).toList();
@@ -110,6 +126,7 @@ void main() async {
     print('\n🌍 Public API URL (Replit):');
     print('  $replitUrl');
     print('\n📡 API Endpoints:');
+    print('  GET    $replitUrl/          (Welcome message)');
     print('  GET    $replitUrl/tasks');
     print('  POST   $replitUrl/tasks');
     print('  PUT    $replitUrl/tasks/{id}');
@@ -123,6 +140,7 @@ void main() async {
     }
     print('  Android:  http://10.0.2.2:$port (for Android Emulator)');
     print('\n📡 API Endpoints:');
+    print('  GET    $localhostUrl/          (Welcome message)');
     print('  GET    $localhostUrl/tasks');
     print('  POST   $localhostUrl/tasks');
     print('  PUT    $localhostUrl/tasks/{id}');
