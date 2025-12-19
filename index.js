@@ -146,7 +146,7 @@ app.listen(PORT, HOST, () => {
 
   if (isReplit) {
     // Replit deployment
-    const replitUrl = `https://${replSlug}.${replOwner}.repl.co`;
+    const replitUrl = `https://${replSlug}.${replOwner}.replit.app`;
     console.log('\n🌍 Public API URL (Replit):');
     console.log(`  ${replitUrl}`);
     console.log('\n📡 API Endpoints:');
