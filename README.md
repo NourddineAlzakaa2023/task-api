@@ -68,6 +68,16 @@ curl -X DELETE http://localhost:5000/tasks/1
 3. The server will start automatically using the `start` script
 4. Replit will provide a public URL automatically
 
+**⚠️ Important: SSL Certificate Warning**
+
+If you see `ERR_CERT_COMMON_NAME_INVALID` error:
+
+1. **Quick Fix**: Click "Advanced" → "Proceed to [your-url].replit.app (unsafe)"
+2. **Best Solution**: Change your Repl name from generic names like `workspace` to a unique name (e.g., `my-task-api`)
+3. **Get Correct URL**: Use the "Open in Browser" button in Replit's Webview panel to get the actual URL (Replit sometimes adds random numbers like `workspace-00.replit.app`)
+
+**💡 Tip for Presentations**: Always click "Run" in Replit before showing the API to ensure the server is active (free tier servers sleep after inactivity).
+
 ### Environment Variables
 - `PORT` - Server port (default: 5000)
 - `REPL_SLUG` - Replit slug (automatically set by Replit)

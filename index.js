@@ -146,9 +146,12 @@ app.listen(PORT, HOST, () => {
 
   if (isReplit) {
     // Replit deployment
+    // Note: If you see SSL certificate errors, use the "Open in Browser" button
+    // in Replit's Webview to get the correct URL (may include random numbers)
     const replitUrl = `https://${replSlug}.${replOwner}.replit.app`;
     console.log('\n🌍 Public API URL (Replit):');
     console.log(`  ${replitUrl}`);
+    console.log('\n💡 Tip: If URL doesn\'t work, use "Open in Browser" button in Replit');
     console.log('\n📡 API Endpoints:');
     console.log(`  GET    ${replitUrl}/          (Welcome message)`);
     console.log(`  GET    ${replitUrl}/tasks`);
