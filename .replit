@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 run = "dart run bin/server.dart"
 entrypoint = "bin/server.dart"
 language = "dart"
@@ -12,3 +13,16 @@ run = ["sh", "-c", "dart run bin/server.dart"]
 [agent]
 expertMode = true
 
+=======
+run = "node index.js"
+entrypoint = "index.js"
+language = "nodejs"
+
+[nix]
+channel = "stable-22_11"
+
+[deploy]
+publicDir = "/"
+run = ["sh", "-c", "node index.js"]
+
+>>>>>>> 0e94b201f1276a147dd5723c0df524850ba9652c
