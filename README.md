@@ -35,51 +35,69 @@ npm install
 npm start
 ```
 
-The server will start on port 5000 (or the port specified in `process.env.PORT`).
+The server will start on port 8080 (or the port specified in `process.env.PORT`).
 
 ## Testing with curl
 
 ```bash
 # GET welcome message
-curl http://localhost:5000/
+curl http://localhost:8080/
 
 # GET all tasks
-curl http://localhost:5000/tasks
+curl http://localhost:8080/tasks
 
 # CREATE task
-curl -X POST http://localhost:5000/tasks \
+curl -X POST http://localhost:8080/tasks \
   -H "Content-Type: application/json" \
   -d '{"title": "My first task"}'
 
 # UPDATE task
-curl -X PUT http://localhost:5000/tasks/1 \
+curl -X PUT http://localhost:8080/tasks/1 \
   -H "Content-Type: application/json" \
   -d '{"title": "Updated task", "completed": true}'
 
 # DELETE task
-curl -X DELETE http://localhost:5000/tasks/1
+curl -X DELETE http://localhost:8080/tasks/1
 ```
 
 ## Deployment
 
 ### Replit
 1. Upload `index.js` and `package.json` to your Replit project
-2. Replit will automatically detect Node.js and install dependencies
-3. The server will start automatically using the `start` script
+2. Run `npm install` in the Shell to install dependencies
+3. Click "Run" button - the server will start automatically
 4. Replit will provide a public URL automatically
 
-**⚠️ Important: SSL Certificate Warning**
+**⚠️ Troubleshooting Webview Issues**
 
-If you see `ERR_CERT_COMMON_NAME_INVALID` error:
+If the Webview doesn't open or shows "Refused to connect":
 
-1. **Quick Fix**: Click "Advanced" → "Proceed to [your-url].replit.app (unsafe)"
-2. **Best Solution**: Change your Repl name from generic names like `workspace` to a unique name (e.g., `my-task-api`)
-3. **Get Correct URL**: Use the "Open in Browser" button in Replit's Webview panel to get the actual URL (Replit sometimes adds random numbers like `workspace-00.replit.app`)
+1. **Check Server is Running**: 
+   - Look for `✅ Server running on port 8080` in the console
+   - Test locally: `curl http://localhost:8080/` in Shell
 
-**💡 Tip for Presentations**: Always click "Run" in Replit before showing the API to ensure the server is active (free tier servers sleep after inactivity).
+2. **Change Repl Name** (Recommended):
+   - Click on the Repl name (e.g., `workspace`) at the top
+   - Change to a unique name like `my-task-api` or `doctor-api-test`
+   - Click "Stop" then "Run" again
+   - Wait 10 seconds for the new URL to be ready
+
+3. **SSL Certificate Warning** (`ERR_CERT_COMMON_NAME_INVALID`):
+   - Click "Advanced" → "Proceed to [your-url].replit.app (unsafe)"
+   - Or change Repl name to avoid certificate conflicts
+
+4. **Get Correct URL**:
+   - Use the "Open in Browser" button in Replit's Webview panel
+   - Replit sometimes adds random numbers (e.g., `workspace-00.replit.app`)
+
+**💡 Tip for Presentations**: 
+- Always click "Run" in Replit before showing the API
+- Wait 10-15 seconds after clicking Run
+- Use a unique Repl name (not `workspace`) to avoid SSL issues
+- Test the URL in the Shell first: `curl http://localhost:8080/tasks`
 
 ### Environment Variables
-- `PORT` - Server port (default: 5000)
+- `PORT` - Server port (default: 8080, Replit's most stable port)
 - `REPL_SLUG` - Replit slug (automatically set by Replit)
 - `REPL_OWNER` - Replit owner (automatically set by Replit)
 
