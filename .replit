@@ -9,3 +9,6 @@ channel = "stable-22_11"
 publicDir = "/"
 run = ["sh", "-c", "dart run bin/server.dart"]
 
+[agent]
+expertMode = true
+
